@@ -6,6 +6,18 @@ AgentHub turns a natural-language request into coordinated work across specialis
 
 This is Yuxuan Feng's portfolio fork of [SeiyunSky/AgentHub-AllInOne](https://github.com/SeiyunSky/AgentHub-AllInOne). The platform is a team project; the original architecture report and contributor attribution remain in [ARCHITECTURE.md](ARCHITECTURE.md).
 
+## Animated demo
+
+**从一个任务到可预览的报告：多 Agent 协作、流式回复、人工审批与文件预览。**
+
+![AgentHub scripted UI demo: choose agents, submit a request, follow streamed responses, approve a proposed file, and preview the report](docs/media/agenthub-workflow.gif)
+
+This 21-second walkthrough records the actual Vue interface: an Orchestrator coordinates a Data Analyst and a Report Builder, the user reviews and approves a proposed HTML file, and the report opens in the workspace. It highlights how the interface makes agent activity and user decisions visible.
+
+**Demo scope:** agent responses, tool events and report contents are scripted through local REST/SSE fixtures using fictional figures. The clicks, streamed rendering, approval request and sandboxed preview use the real frontend; this recording does not run a live model, enterprise integration or deployment.
+
+[Reproduce the recording and inspect its checks](docs/DEMO.md) · [Approval screenshot](docs/media/agenthub-approval.png) · [Report screenshot](docs/media/agenthub-report.png)
+
 ## Product walkthrough
 
 1. Create a conversation and choose agents or a group template.

@@ -1,0 +1,88 @@
+{
+  "mode": "actual Vue UI, scripted local REST/SSE events",
+  "date": "2026-11-23",
+  "request_submitted": true,
+  "approval_received": true,
+  "artifact_available_after_approval": true,
+  "artifact_preview_rendered": true,
+  "browser_errors": [],
+  "unhandled_fixture_routes": [],
+  "external_requests": [],
+  "offline_font_stylesheets": [
+    "https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap"
+  ],
+  "requests": [
+    [
+      "GET",
+      "/api/v1/agents"
+    ],
+    [
+      "GET",
+      "/api/v1/conversations/portfolio-demo"
+    ],
+    [
+      "GET",
+      "/api/v1/agents"
+    ],
+    [
+      "GET",
+      "/api/v1/conversations"
+    ],
+    [
+      "GET",
+      "/api/v1/conversations/portfolio-demo/messages"
+    ],
+    [
+      "GET",
+      "/api/v1/chat/stream/portfolio-demo"
+    ],
+    [
+      "POST",
+      "/api/v1/chat"
+    ],
+    [
+      "GET",
+      "/api/v1/agents"
+    ],
+    [
+      "GET",
+      "/api/v1/agents"
+    ],
+    [
+      "GET",
+      "/api/v1/agents"
+    ],
+    [
+      "POST",
+      "/api/v1/approvals/write-report/decide"
+    ],
+    [
+      "POST",
+      "/api/v1/workflows"
+    ],
+    [
+      "GET",
+      "/api/v1/agents"
+    ],
+    [
+      "GET",
+      "/api/v1/sandbox/portfolio-demo/files"
+    ],
+    [
+      "GET",
+      "/api/v1/workflows"
+    ],
+    [
+      "GET",
+      "/api/v1/agents"
+    ],
+    [
+      "GET",
+      "/api/v1/sandbox/portfolio-demo/files"
+    ],
+    [
+      "GET",
+      "/api/v1/sandbox/portfolio-demo/files/raw"
+    ]
+  ]
+}
