@@ -47,11 +47,13 @@ python docs/demo/capture.py --output /tmp/agenthub-demo
 | --- | --- |
 | [demo/capture.py](demo/capture.py) | Start the local services, interact with the real UI and encode the GIF |
 | [demo/fixture_server.py](demo/fixture_server.py) | In-memory agents, conversation, scripted SSE events, approval and report |
-| [media/agenthub-workflow.gif](media/agenthub-workflow.gif) | Looping 1200 × 870 walkthrough with visible scripted-demo labels |
+| [media/agenthub-workflow.gif](media/agenthub-workflow.gif) | Looping 2400 × 1740 walkthrough with visible scripted-demo labels |
 | [media/agenthub-approval.png](media/agenthub-approval.png) | Full-size pending approval screenshot |
 | [media/agenthub-report.png](media/agenthub-report.png) | Full-size HTML report preview screenshot |
 | [media/capture-checks.json](media/capture-checks.json) | Capture assertions and observed local API routes |
 
 The recorder asserts that the chat request and approval reach the fixture, the streamed conversation renders, the report preview contains **$300**, and no browser errors, unknown fixture routes or unexpected external requests occur. It verifies the generated GIF has multiple frames and loops. A failed capture saves `capture-failure.png` for local debugging.
+
+The 1440 × 900 CSS viewport and original scene timings are preserved. Capture uses 2× pixel density, including native Chrome scaling for sharp sandboxed-iframe text; the GIF canvas and captions have twice their original pixel dimensions. Palette conversion uses no dithering. Development hot reload is disabled only in the temporary recording configuration.
 
 These checks cover the demonstrated frontend interactions. They do not validate production orchestration, model quality, authentication or approval-policy enforcement. Rendering and fonts can vary slightly across browser versions and operating systems.

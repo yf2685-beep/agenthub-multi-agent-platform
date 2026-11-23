@@ -1,6 +1,16 @@
 {
   "mode": "actual Vue UI, scripted local REST/SSE events",
   "date": "2026-11-23",
+  "viewport_css": [
+    1440,
+    900
+  ],
+  "device_scale_factor": 2,
+  "gif_size_px": [
+    2400,
+    1740
+  ],
+  "gif_dither": "none",
   "request_submitted": true,
   "approval_received": true,
   "artifact_available_after_approval": true,
@@ -18,15 +28,15 @@
     ],
     [
       "GET",
-      "/api/v1/conversations/portfolio-demo"
-    ],
-    [
-      "GET",
       "/api/v1/agents"
     ],
     [
       "GET",
       "/api/v1/conversations"
+    ],
+    [
+      "GET",
+      "/api/v1/conversations/portfolio-demo"
     ],
     [
       "GET",

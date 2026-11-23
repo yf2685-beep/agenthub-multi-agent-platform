@@ -35,24 +35,26 @@ class Recorder:
     def snap(self, step, duration=1600):
         self.page.wait_for_timeout(180)
         shot = Image.open(BytesIO(self.page.screenshot(animations="disabled"))).convert("RGB")
-        shot = shot.resize((1200, 750), Image.Resampling.LANCZOS)
-        frame = Image.new("RGB", (1200, 870), "#13182b")
-        frame.paste(shot, (0, 84))
+        # Capture at 2x density and preserve twice the original GIF resolution.
+        # All page coordinates, framing, caption proportions and timings stay fixed.
+        shot = shot.resize((2400, 1500), Image.Resampling.LANCZOS)
+        frame = Image.new("RGB", (2400, 1740), "#13182b")
+        frame.paste(shot, (0, 168))
         draw = ImageDraw.Draw(frame)
-        draw.text((25, 11), "AgentHub / Multi-agent workspace", fill="#f6f5ff", font=font(26))
-        draw.text((26, 48), step, fill="#aba5ff", font=font(19))
-        draw.rounded_rectangle((901, 20, 1177, 55), radius=8, fill="#2a3050")
-        draw.text((914, 29), "VUE UI / SCRIPTED DEMO", fill="#e2e4f4", font=font(17))
-        draw.text((26, 845), "Fictional data + local REST/SSE fixtures. No live model, enterprise system, or deployment.",
-                  fill="#aeb9d4", font=font(15))
+        draw.text((50, 22), "AgentHub / Multi-agent workspace", fill="#f6f5ff", font=font(52))
+        draw.text((52, 96), step, fill="#aba5ff", font=font(38))
+        draw.rounded_rectangle((1802, 40, 2354, 110), radius=16, fill="#2a3050")
+        draw.text((1828, 58), "VUE UI / SCRIPTED DEMO", fill="#e2e4f4", font=font(34))
+        draw.text((52, 1690), "Fictional data + local REST/SSE fixtures. No live model, enterprise system, or deployment.",
+                  fill="#aeb9d4", font=font(30))
         self.frames.append(frame)
         self.durations.append(duration)
 
     def save(self, output):
         # A shared palette avoids distracting color flicker between frames.
-        sample = Image.new("RGB", (300 * 4, 218 * ((len(self.frames) + 3) // 4)))
+        sample = Image.new("RGB", (600 * 4, 436 * ((len(self.frames) + 3) // 4)))
         for i, frame in enumerate(self.frames):
-            sample.paste(frame.resize((300, 218)), ((i % 4) * 300, (i // 4) * 218))
+            sample.paste(frame.resize((600, 436)), ((i % 4) * 600, (i // 4) * 436))
         palette = sample.quantize(colors=256)
         frames = [f.quantize(palette=palette, dither=Image.Dither.NONE) for f in self.frames]
         output.mkdir(parents=True, exist_ok=True)
@@ -80,7 +82,7 @@ def frontend(fixture_url):
         with tempfile.NamedTemporaryFile(mode="w", prefix=".capture-", suffix=".mjs",
                                          dir=directory, delete=False) as config:
             config.write("import original from './vite.config.ts';\nexport default {...original, "
-                         + "envDir: " + json.dumps(temporary) + ", server: {host: '127.0.0.1', strictPort: true, port: "
+                         + "envDir: " + json.dumps(temporary) + ", server: {host: '127.0.0.1', hmr: false, strictPort: true, port: "
                          + str(port) + ", proxy: {'/api': " + json.dumps(fixture_url) + "}}};\n")
         log_path = Path(temporary) / "vite.log"
         try:
@@ -122,8 +124,10 @@ def main():
     errors, blocked, offline_fonts = [], [], []
     try:
         with frontend(f"http://127.0.0.1:{server.server_port}") as url, sync_playwright() as playwright:
-            browser = playwright.chromium.launch(headless=True, executable_path=args.browser)
-            context = browser.new_context(viewport={"width": 1440, "height": 900}, device_scale_factor=1,
+            # Native density also keeps sandboxed iframe text sharp in Chrome.
+            browser = playwright.chromium.launch(headless=True, executable_path=args.browser,
+                                                 args=["--force-device-scale-factor=2"])
+            context = browser.new_context(viewport={"width": 1440, "height": 900}, device_scale_factor=2,
                                           locale="en-US", timezone_id="UTC")
             context.add_init_script("""if (window.top === window) { localStorage.setItem('agenthub-lang', 'en');
                 localStorage.setItem('agenthub-accent', 'violet');
@@ -248,6 +252,8 @@ def main():
                 recorder.save(args.output)
                 (args.output / "capture-checks.json").write_text(json.dumps({
                     "mode": "actual Vue UI, scripted local REST/SSE events", "date": "2026-11-23",
+                    "viewport_css": [1440, 900], "device_scale_factor": 2,
+                    "gif_size_px": [2400, 1740], "gif_dither": "none",
                     "request_submitted": fixture.submitted.is_set(), "approval_received": fixture.approved.is_set(),
                     "artifact_available_after_approval": fixture.file_ready,
                     "artifact_preview_rendered": True,
